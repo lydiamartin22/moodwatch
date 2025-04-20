@@ -6,7 +6,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const API_URL = process.env.REACT_APP_API_URL; // <--- Variable de entorno
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -14,9 +14,9 @@ const Login = () => {
       const res = await axios.post(`${API_URL}/auth/login`, { email, password });
       const token = res.data.token;
       localStorage.setItem('token', token);
-      window.location.href = '/movies'; // Redirige después de login
+      window.location.href = '/movies'; // Redirige tras login
     } catch (err) {
-      console.error(err);
+      console.error(err.response ? err.response.data : err.message);
       setError('Email o contraseña incorrectos');
     }
   };

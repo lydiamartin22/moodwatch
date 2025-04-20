@@ -1,108 +1,79 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../css/estilo.css';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
-  const [newMovie, setNewMovie] = useState({ title: '', description: '', image: '' });
-
   const token = localStorage.getItem('token');
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  // Traer películas
+  const fetchMovies = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/movies`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      setMovies(res.data);
+    } catch (err) {
+      console.error('Error al obtener películas:', err.response ? err.response.data : err.message);
+    }
+  };
+
+  // Eliminar una película
+  const handleDeleteMovie = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/movies/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      fetchMovies(); // Actualizar lista después de eliminar
+    } catch (err) {
+      console.error('Error al eliminar película:', err.response ? err.response.data : err.message);
+    }
+  };
+
+  // Marcar/Desmarcar como favorito
+  const handleFavoriteToggle = async (id) => {
+    try {
+      await axios.put(`${API_URL}/movies/favorite/${id}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      fetchMovies(); // Actualizar lista después de marcar favorito
+    } catch (err) {
+      console.error('Error al marcar favorito:', err.response ? err.response.data : err.message);
+    }
+  };
 
   useEffect(() => {
     fetchMovies();
   }, []);
 
-  const fetchMovies = async () => {
-    try {
-      const res = await axios.get('http://localhost:5001/api/movies');
-      setMovies(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  
-  const handleInputChange = (e) => {
-    setNewMovie({ ...newMovie, [e.target.name]: e.target.value });
-  };
-
-  const handleCreateMovie = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('http://localhost:5001/api/movies', newMovie, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setNewMovie({ title: '', description: '', image: '' });
-      fetchMovies();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleDeleteMovie = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5001/api/movies/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      fetchMovies();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleFavoriteToggle = async (id) => {
-    try {
-      await axios.put(`http://localhost:5001/api/movies/favorite/${id}`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      fetchMovies();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
-    <div className="movies-container">
-      <h2>Películas Moodwatch</h2>
-
-      <form onSubmit={handleCreateMovie}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Título"
-          value={newMovie.title}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="Descripción"
-          value={newMovie.description}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="image"
-          placeholder="URL de la imagen"
-          value={newMovie.image}
-          onChange={handleInputChange}
-        />
-        <button type="submit">Agregar Película</button>
-      </form>
-
-      <div className="movies-list">
-        {movies.map((movie) => (
+    <div className="movies-list">
+      {movies.length > 0 ? (
+        movies.map((movie) => (
           <div key={movie._id} className="movie-card">
             <img src={movie.image} alt={movie.title} />
             <h3>{movie.title}</h3>
             <p>{movie.description}</p>
+
+            {/* Botón de eliminar */}
             <button onClick={() => handleDeleteMovie(movie._id)}>Eliminar</button>
+
+            {/* Botón de favorito */}
             <button onClick={() => handleFavoriteToggle(movie._id)}>
               {movie.isFavorite ? '💖 Quitar Favorito' : '🤍 Añadir Favorito'}
             </button>
           </div>
-        ))}
-      </div>
+        ))
+      ) : (
+        <p>No hay películas disponibles.</p>
+      )}
     </div>
   );
 };
