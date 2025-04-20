@@ -3,6 +3,9 @@ import axios from 'axios';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState('');
   const token = localStorage.getItem('token');
   const API_URL = process.env.REACT_APP_API_URL;
 
@@ -21,7 +24,26 @@ const Movies = () => {
     }
   };
 
-  // Eliminar una película
+  // Crear nueva película
+  const handleCreateMovie = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API_URL}/movies`, { title, description, image }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      setTitle('');
+      setDescription('');
+      setImage('');
+      fetchMovies(); // Actualizar lista después de crear
+    } catch (err) {
+      console.error('Error al crear película:', err.response ? err.response.data : err.message);
+    }
+  };
+
+  // Eliminar película
   const handleDeleteMovie = async (id) => {
     try {
       await axios.delete(`${API_URL}/movies/${id}`, {
@@ -29,13 +51,13 @@ const Movies = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchMovies(); // Actualizar lista después de eliminar
+      fetchMovies();
     } catch (err) {
       console.error('Error al eliminar película:', err.response ? err.response.data : err.message);
     }
   };
 
-  // Marcar/Desmarcar como favorito
+  // Marcar/Desmarcar favorito
   const handleFavoriteToggle = async (id) => {
     try {
       await axios.put(`${API_URL}/movies/favorite/${id}`, {}, {
@@ -43,7 +65,7 @@ const Movies = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchMovies(); // Actualizar lista después de marcar favorito
+      fetchMovies();
     } catch (err) {
       console.error('Error al marcar favorito:', err.response ? err.response.data : err.message);
     }
@@ -54,26 +76,53 @@ const Movies = () => {
   }, []);
 
   return (
-    <div className="movies-list">
-      {movies.length > 0 ? (
-        movies.map((movie) => (
-          <div key={movie._id} className="movie-card">
-            <img src={movie.image} alt={movie.title} />
-            <h3>{movie.title}</h3>
-            <p>{movie.description}</p>
+    <div className="movies-container">
+      <h2>Crear Nueva Película</h2>
+      <form onSubmit={handleCreateMovie} className="create-movie-form">
+        <input 
+          type="text"
+          placeholder="Título"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+        <input 
+          type="text"
+          placeholder="Descripción"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+        <input 
+          type="text"
+          placeholder="URL de imagen"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+          required
+        />
+        <button type="submit">Crear Película</button>
+      </form>
 
-            {/* Botón de eliminar */}
-            <button onClick={() => handleDeleteMovie(movie._id)}>Eliminar</button>
+      <h2>Catálogo de Películas</h2>
+      <div className="movies-list">
+        {movies.length > 0 ? (
+          movies.map((movie) => (
+            <div key={movie._id} className="movie-card">
+              <img src={movie.image} alt={movie.title} />
+              <h3>{movie.title}</h3>
+              <p>{movie.description}</p>
 
-            {/* Botón de favorito */}
-            <button onClick={() => handleFavoriteToggle(movie._id)}>
-              {movie.isFavorite ? '💖 Quitar Favorito' : '🤍 Añadir Favorito'}
-            </button>
-          </div>
-        ))
-      ) : (
-        <p>No hay películas disponibles.</p>
-      )}
+              <button onClick={() => handleDeleteMovie(movie._id)}>Eliminar</button>
+
+              <button onClick={() => handleFavoriteToggle(movie._id)}>
+                {movie.isFavorite ? '💖 Quitar Favorito' : '🤍 Añadir Favorito'}
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No hay películas disponibles.</p>
+        )}
+      </div>
     </div>
   );
 };
