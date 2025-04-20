@@ -1,0 +1,38 @@
+[
+    {
+      "title": "Pulp Fiction",
+      "description": "Una película de Tarantino con historias entrelazadas.",
+      "image": "https://upload.wikimedia.org/wikipedia/en/8/82/Pulp_Fiction_cover.jpg",
+      "isFavorite": false
+    },
+    {
+      "title": "Inception",
+      "description": "Un ladrón que roba secretos a través de los sueños.",
+      "image": "https://upload.wikimedia.org/wikipedia/en/7/7f/Inception_ver3.jpg",
+      "isFavorite": false
+    },
+    {
+      "title": "The Shawshank Redemption",
+      "description": "Dos hombres encuentran esperanza en una prisión.",
+      "image": "https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg",
+      "isFavorite": false
+    },
+    {
+      "title": "The Dark Knight",
+      "description": "Batman enfrenta a su enemigo más peligroso, el Joker.",
+      "image": "https://upload.wikimedia.org/wikipedia/en/8/8a/Dark_Knight.jpg",
+      "isFavorite": false
+    },
+    {
+      "title": "Fight Club",
+      "description": "Un hombre aburrido de su vida crea un club de pelea clandestino.",
+      "image": "https://upload.wikimedia.org/wikipedia/en/f/fc/Fight_Club_poster.jpg",
+      "isFavorite": false
+    },
+    {
+      "title": "Forrest Gump",
+      "description": "La extraordinaria vida de Forrest Gump.",
+      "image": "https://upload.wikimedia.org/wikipedia/en/6/67/Forrest_Gump_poster.jpg",
+      "isFavorite": false
+    }
+  ]  
