@@ -2,11 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../css/estilo.css';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-await axios.get(`${API_URL}/movies`);
-await axios.post(`${API_URL}/auth/login`, { email, password });
-
 const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [newMovie, setNewMovie] = useState({ title: '', description: '', image: '' });
