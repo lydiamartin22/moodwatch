@@ -1,49 +1,46 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import axios from 'axios';
-
-const API_URL = process.env.REACT_APP_API_URL;
-
-await axios.get(`${API_URL}/movies`);
-await axios.post(`${API_URL}/auth/login`, { email, password });
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-        const res = await axios.post('http://localhost:5001/api/auth/login', { email, password });
-        localStorage.setItem('token', res.data.token);
-        navigate('/movies');
+      const res = await axios.post(`${API_URL}/auth/login`, { email, password });
+      const token = res.data.token;
+      localStorage.setItem('token', token);
+      window.location.href = '/movies'; // Redirige a películas tras login
     } catch (err) {
-        console.error(err);
-        alert('Email o contraseña incorrectos');
+      setError('Email o contraseña incorrectos');
     }
   };
 
   return (
     <div className="login-container">
-      <h2>Login Moodwatch</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Correo electrónico"
+      <h2>Iniciar Sesión</h2>
+      <form onSubmit={handleLogin}>
+        <input 
+          type="email" 
+          placeholder="Email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
+          required 
         />
-        <input
-          type="password"
-          placeholder="Contraseña"
+        <input 
+          type="password" 
+          placeholder="Contraseña" 
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
+          required 
         />
         <button type="submit">Entrar</button>
       </form>
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };
