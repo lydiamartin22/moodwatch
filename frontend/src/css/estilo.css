@@ -1,0 +1,96 @@
+/* Fondo oscuro general */
+body {
+    background-color: #141414;
+    color: #fff;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Contenedor principal */
+  .movies-container {
+    padding: 20px;
+  }
+  
+  /* Formulario para agregar películas */
+  form {
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  form input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  form button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: darkred;
+  }
+  
+  /* Lista de películas en formato grid */
+  .movies-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Tarjeta de película */
+  .movie-card {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .movie-card img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .movie-card h3 {
+    margin: 10px 0 5px 0;
+    text-align: center;
+  }
+  
+  .movie-card p {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  /* Botones */
+  .movie-card button {
+    margin-top: 10px;
+    background-color: #e50914;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .movie-card button:hover {
+    background-color: darkred;
+  }
+  
+  /* Efecto hover en tarjetas */
+  .movie-card:hover {
+    transform: scale(1.05);
+  }
+  
