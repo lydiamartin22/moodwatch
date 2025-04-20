@@ -11,8 +11,8 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.error(err));
 
 async function createUser() {
-  const email = 'moodwatch@demo.com'; // Email que quieres usar
-  const plainPassword = 'M00dW@tch!2024$'; // Contraseña segura
+  const email = 'moodwatch@demo.com'; // Email
+  const plainPassword = 'M00dW@tch!2024$'; // Contraseña
 
   try {
     const salt = await bcrypt.genSalt(10);

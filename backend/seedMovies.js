@@ -11,11 +11,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 const seedMovies = async () => {
   try {
-    // Primero eliminamos todas las películas existentes
-    await Movie.deleteMany({});
-    console.log('Películas anteriores eliminadas');
-
-    // Ahora insertamos las nuevas
+    // Insertamos las películas
     const movies = [
         {
           title: 'El Padrino',
